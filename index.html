@@ -126,7 +126,8 @@
         }
         
         /* Header-specific SVG coloring */
-        .site-header .logo-svg path {
+        .site-header .logo-box,
+        .site-header .logo-crown {
             fill: var(--color-off-white);
         }
         
@@ -141,21 +142,13 @@
             height: auto;
         }
         
-        .logo-svg .logo-box { stroke-width: 2; fill: none; }
-        .logo-svg .logo-crown { stroke-width: 2; fill: none; }
-
-        /* White logo version for header */
-        .logo-white .logo-box,
-        .logo-white .logo-crown {
-            stroke: var(--color-off-white);
+        /* Default logo colors */
+        .logo-box {
+            fill: var(--color-dark-charcoal);
         }
-
-        /* Colored logo version for body */
-        .logo-colored .logo-box {
-            stroke: var(--color-dark-charcoal);
-        }
-        .logo-colored .logo-crown {
-            stroke: var(--color-terracotta);
+        
+        .logo-crown {
+            fill: var(--color-terracotta);
         }
         
         .logotype {
@@ -271,8 +264,8 @@
     <header class="site-header">
         <a href="#" class="logo-container logo-white">
             <svg class="logo-svg" viewBox="59 0 138 103" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M93.1197 31.7644V98.0055H163.918V31.7644H168.78V102.867H88.2578V31.7644H93.1197Z" fill="#262120"/>
-<path d="M166.352 29.8913L193.244 1.61158L197.191 5.39864L166.35 37.2825L131.407 9.18872V102.867H125.937V9.21593L90.6899 37.2795L59.5576 5.40922L63.4837 1.601L90.6899 29.8928L128.666 0L166.35 29.8913H166.352Z" fill="#E6552F"/>
+<path class="logo-box" d="M93.1197 31.7644V98.0055H163.918V31.7644H168.78V102.867H88.2578V31.7644H93.1197Z"/>
+<path class="logo-crown" d="M166.352 29.8913L193.244 1.61158L197.191 5.39864L166.35 37.2825L131.407 9.18872V102.867H125.937V9.21593L90.6899 37.2795L59.5576 5.40922L63.4837 1.601L90.6899 29.8928L128.666 0L166.35 29.8913H166.352Z"/>
 </svg>
             <div class="logotype">Oumnik<span>Studio</span></div>
         </a>
@@ -283,8 +276,8 @@
             <h2>Velkommen til</h2>
             <div class="logo-container logo-colored">
                  <svg class="logo-svg" viewBox="59 0 138 103" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M93.1197 31.7644V98.0055H163.918V31.7644H168.78V102.867H88.2578V31.7644H93.1197Z" fill="#262120"/>
-<path d="M166.352 29.8913L193.244 1.61158L197.191 5.39864L166.35 37.2825L131.407 9.18872V102.867H125.937V9.21593L90.6899 37.2795L59.5576 5.40922L63.4837 1.601L90.6899 29.8928L128.666 0L166.35 29.8913H166.352Z" fill="#E6552F"/>
+<path class="logo-box" d="M93.1197 31.7644V98.0055H163.918V31.7644H168.78V102.867H88.2578V31.7644H93.1197Z"/>
+<path class="logo-crown" d="M166.352 29.8913L193.244 1.61158L197.191 5.39864L166.35 37.2825L131.407 9.18872V102.867H125.937V9.21593L90.6899 37.2795L59.5576 5.40922L63.4837 1.601L90.6899 29.8928L128.666 0L166.35 29.8913H166.352Z"/>
 </svg>
                 <div class="logotype">Oumnik<span>Studio</span></div>
             </div>
@@ -334,8 +327,8 @@
     <footer>
         <div class="logo-container logo-colored">
             <svg class="logo-svg" viewBox="59 0 138 103" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M93.1197 31.7644V98.0055H163.918V31.7644H168.78V102.867H88.2578V31.7644H93.1197Z" fill="#262120"/>
-<path d="M166.352 29.8913L193.244 1.61158L197.191 5.39864L166.35 37.2825L131.407 9.18872V102.867H125.937V9.21593L90.6899 37.2795L59.5576 5.40922L63.4837 1.601L90.6899 29.8928L128.666 0L166.35 29.8913H166.352Z" fill="#E6552F"/>
+<path class="logo-box" d="M93.1197 31.7644V98.0055H163.918V31.7644H168.78V102.867H88.2578V31.7644H93.1197Z"/>
+<path class="logo-crown" d="M166.352 29.8913L193.244 1.61158L197.191 5.39864L166.35 37.2825L131.407 9.18872V102.867H125.937V9.21593L90.6899 37.2795L59.5576 5.40922L63.4837 1.601L90.6899 29.8928L128.666 0L166.35 29.8913H166.352Z"/>
 </svg>
             <div class="logotype">Oumnik<span>Studio</span></div>
         </div>
