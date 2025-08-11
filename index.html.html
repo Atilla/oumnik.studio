@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oumnik Studio</title>
+    
+    <!-- Using Google Fonts to match the design -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. CSS Reset and Global Styles --- */
+        :root {
+            --color-dark-charcoal: #2D2D2D;
+            --color-off-white: #FFFFFF;
+            --color-sandy-beige: #FAEFE5;
+            --color-terracotta: #E56B47;
+            --font-main: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-off-white);
+            color: var(--color-dark-charcoal);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: var(--color-terracotta);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- 2. Layout Sections --- */
+        .site-header,
+        footer,
+        section {
+            padding: 40px 25px;
+        }
+
+        .site-header {
+            background-color: var(--color-dark-charcoal);
+            color: var(--color-off-white);
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .welcome-section {
+            text-align: center;
+        }
+
+        .info-section-beige {
+            background-color: var(--color-sandy-beige);
+        }
+
+        .contact-section {
+            text-align: center;
+        }
+        
+        footer {
+            text-align: center;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        /* --- 3. Component Styling --- */
+        
+        /* Logo SVG and Text Styling */
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-svg {
+            width: 80px;
+            height: auto;
+        }
+        
+        .logo-svg .logo-box { stroke-width: 2; fill: none; }
+        .logo-svg .logo-crown { stroke-width: 2; fill: none; }
+
+        /* White logo version for header */
+        .logo-white .logo-box,
+        .logo-white .logo-crown {
+            stroke: var(--color-off-white);
+        }
+
+        /* Colored logo version for body */
+        .logo-colored .logo-box {
+            stroke: var(--color-dark-charcoal);
+        }
+        .logo-colored .logo-crown {
+            stroke: var(--color-terracotta);
+        }
+        
+        .logotype {
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .logotype span {
+            display: block;
+            font-weight: 400;
+            font-size: 0.8em;
+            letter-spacing: 3px;
+        }
+        
+        /* Button Styling */
+        .button {
+            display: inline-block;
+            background-color: var(--color-terracotta);
+            color: var(--color-off-white);
+            padding: 14px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+        
+        .button:hover {
+            background-color: #d15a3a;
+            text-decoration: none;
+        }
+
+        /* --- 4. Form Styling --- */
+        .contact-section h2 { 
+            margin-bottom: 10px; 
+        }
+
+        .contact-section p { 
+            max-width: 400px; 
+            margin-left: auto; 
+            margin-right: auto;
+        }
+
+        .contact-section form { 
+            margin-top: 30px; 
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        form input, form select {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            background-color: var(--color-off-white);
+        }
+        
+        .form-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-group select {
+            width: 40%;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5rem;
+        }
+
+        .form-group input {
+            width: 60%;
+        }
+        
+        /* --- 5. Footer Styling --- */
+        footer .logo-container {
+            margin-bottom: 30px;
+        }
+        
+        .footer-contact-details p {
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="#" class="logo-container logo-white">
+            <svg class="logo-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                <path class="logo-box" d="M20 40 H 80 V 80 H 20 Z" />
+                <path class="logo-crown" d="M20 40 L 50 10 L 80 40 M50 10 V 80" />
+            </svg>
+            <div class="logotype">Oumnik<span>Studio</span></div>
+        </a>
+    </header>
+
+    <main>
+        <section class="welcome-section">
+            <h2>Velkommen til</h2>
+            <div class="logo-container logo-colored">
+                 <svg class="logo-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                    <path class="logo-box" d="M20 40 H 80 V 80 H 20 Z" />
+                    <path class="logo-crown" d="M20 40 L 50 10 L 80 40 M50 10 V 80" />
+                </svg>
+                <div class="logotype">Oumnik<span>Studio</span></div>
+            </div>
+            <p>Vi er et arkitektkontor som søker balanse mellom estetikk og funksjon, og prioriterer løsninger som er både bærekraftige, gjennomførbare og tilpasset sitt nabolag – til nytte for både dagens brukere og fremtidige generasjoner.</p>
+            <a href="#contact" class="button">Kaffeprat</a>
+        </section>
+
+        <section class="info-section-beige">
+            <h2>Hvordan vi jobber</h2>
+            <p>I OUMNIK.STUDIO starter hvert prosjekt med en grundig forståelse av både stedet, bygget og menneskene det skal tjene. Vi tror at bærekraftige og meningsfulle løsninger vokser fram når vi kombinerer arkitektonisk kvalitet med realistiske rammer og lokal forankring.</p>
+        </section>
+
+        <section class="info-section-white">
+            <h2>Mål to ganger, kutt en gang</h2>
+            <p>Før vi setter penn til papir, vurderer vi byggets tekniske tilstand, omgivelser, potensial og begrensninger. Vi ser også på nabolagets karakter, regelverk og markedets forutsetninger. Deretter setter vi oss ned sammen med deg og kartlegger mål og prioriteringer – for å finne den retningen som gir mest mening, både for deg og for prosjektet.</p>
+        </section>
+        
+        <section class="info-section-beige">
+            <h2>Design MED menesker, ikke kun FOR menesker</h2>
+            <p>Før vi setter penn til papir, vurderer vi byggets tekniske tilstand, omgivelser, potensial og begrensninger.</p>
+            <p>Før vi setter penn til papir, vurderer vi byggets tekniske tilstand, omgivelser, potensial og begrensninger.</p>
+            <p>Før vi setter penn til papir, vurderer vi byggets tekniske tilstand, omgivelser, potensial og begrensninger.</p>
+            <p>Før vi setter penn til papir, vurderer vi byggets tekniske tilstand, omgivelser, potensial og begrensninger.</p>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <h2>Kaffeprat</h2>
+            <p>Det er alti hyggelig å prattes med en kopp god kaffe.</p>
+            <p>Gi oss beskjed hvordan skal vi ta kontakt, så spanderer vi kaffeen!</p>
+            
+            <form action="#" method="post">
+                <input type="text" id="navn" name="navn" placeholder="Navn" required>
+                <input type="text" id="organisasjon" name="organisasjon" placeholder="Organisasjon">
+                <div class="form-group">
+                    <select id="contact-method" name="contact-method">
+                        <option value="velg">Velg</option>
+                        <option value="email">E-post</option>
+                        <option value="phone">Telefon</option>
+                    </select>
+                    <input type="text" id="contact-info" name="contact-info" placeholder="" required>
+                </div>
+                <button type="submit" class="button">Kaffeprat</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="logo-container logo-colored">
+            <svg class="logo-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                <path class="logo-box" d="M20 40 H 80 V 80 H 20 Z" />
+                <path class="logo-crown" d="M20 40 L 50 10 L 80 40 M50 10 V 80" />
+            </svg>
+            <div class="logotype">Oumnik<span>Studio</span></div>
+        </div>
+        <div class="footer-contact-details">
+            <p>Send oss e-post til<br><a href="mailto:hei@oumnik.studio">hei@oumnik.studio</a></p>
+            <p>eller til<br>Silvia Oumnikova<br><a href="tel:+4792153399">+47 921 533 99</a><br><a href="mailto:silvia@oumnik.studio">silvia@oumnik.studio</a></p>
+        </div>
+    </footer>
+
+</body>
+</html>
