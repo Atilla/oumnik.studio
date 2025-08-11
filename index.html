@@ -85,7 +85,10 @@
         }
         
         footer {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
             padding-top: 50px;
             padding-bottom: 50px;
         }
@@ -240,7 +243,13 @@
         
         /* --- 5. Footer Styling --- */
         footer .logo-container {
-            margin-bottom: 30px;
+            flex-shrink: 0;
+            align-items: center !important;
+            text-align: center;
+        }
+        
+        .footer-contact-details {
+            text-align: left;
         }
         
         .footer-contact-details p {
