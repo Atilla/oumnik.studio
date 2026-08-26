@@ -652,7 +652,7 @@ class Component extends DCLogic {
       incAge:()=>this.setState(x=>({age:String(Math.min(120,(Number(x.age)||0)+1))})),
       decAge:()=>this.setState(x=>({age:String(Math.max(0,(Number(x.age)||0)-1))})),
       ageInvalid: !(Number(s.age)>0) || (s.emailCopy && !/\S+@\S+\.\S+/.test(s.email)),
-      nextAge: ()=>{ if(Number(s.age)>0 && !(s.emailCopy && !/\S+@\S+\.\S+/.test(s.email))) this.go('thanks'); },
+      nextAge: ()=>{ if(!(Number(s.age)>0) || (s.emailCopy && !/\S+@\S+\.\S+/.test(s.email))) return; const items=s.placed.map(p=>'\u2022 '+p.type).join('\n'); const subj='Reimagined street \u2013 '+s.street; const body=['Street: '+s.street,'Ideas placed: '+(s.placed.length+s.sketchPaths.length),'Sketches: '+s.sketchPaths.length,'', 'Elements:', (items||'(none)'),'', 'From:', 'Residency: '+(s.residency||'-'), 'Age: '+(s.age||'-'), 'Gender: '+(s.gender||'-'), s.emailCopy?('Contact: '+s.email):''].join('\n'); window.location.href='mailto:silvia@oumnik.studio?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body); this.go('thanks'); },
       genderCards: [['female','Female'],['male','Male'],['whocares','Who cares']].map(([k,t])=>{
         const sel=s.gender===k;
         return React.createElement('button',{key:k,onClick:()=>this.setState(x=>({gender:x.gender===k?null:k})),style:{background:sel?'var(--coral)':'var(--surface)',border:`2px solid ${sel?'var(--coral)':'var(--line)'}`,borderRadius:'999px',padding:'9px 15px',color:sel?'#fff':'var(--ink)',fontWeight:700,fontSize:13,cursor:'pointer'}},t);
@@ -671,7 +671,7 @@ class Component extends DCLogic {
       toInfo:()=>this.go('age'), finishInfo:()=>this.setState({feedFrom:'thanks'},()=>this.go('feed')),
       feedback:s.feedback||'', setFeedback:(e)=>this.setState({feedback:e.target.value}),
       thanksBtnLabel: /\S/.test(s.feedback||'') ? 'Send feedback →' : 'Send feedback →',
-      goHome:()=>this.setState({residency:null},()=>this.go('city')), sendFeedbackHome:()=>this.resetFlow(),
+      goHome:()=>this.setState({residency:null},()=>this.go('city')), sendFeedbackHome:()=>{ const s=this.state; const subj='Placemaking feedback \u2013 '+s.street; const body=['Street: '+s.street,'Ideas placed: '+(s.placed.length+s.sketchPaths.length),'', 'Feedback:', (s.feedback||'(none)')].join('\n'); window.location.href='mailto:silvia@oumnik.studio?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body); this.resetFlow(); },
       setMapRef:this.setMapRef, mapPins: this.mapReady()?null:mapPins, activeStreet:s.street, activeStreetIdeas:(s.activeIdeas!=null?s.activeIdeas:23), enterEditor:()=>this.go('preview'),
       mapSelected:s.mapSelected, notMapSelected:!s.mapSelected,
       backToMap:()=>this.setState({mapSelected:false},()=>this.go('map')), goCity:()=>this.setState({mapSelected:false},()=>this.go('city')), startCreating:()=>this.go('editor'), previewGallery,
