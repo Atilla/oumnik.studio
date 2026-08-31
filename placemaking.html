@@ -536,12 +536,16 @@ class Component extends DCLogic {
   sendSuggestion = () => this.setState({suggestOpen:true});
   closeSuggest = () => this.setState({suggestOpen:false});
   setSuggestPhoto = (e) => { const f=e.target.files&&e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>this.setState({suggestPhoto:r.result, suggestPhotoName:f.name}); r.readAsDataURL(f); };
-  submitSuggest = () => {
-    const s=this.state; if(!/\S/.test(s.suggestName||'')) return;
-    const subj='Library suggestion \u2013 '+s.street;
-    const body=['Street: '+s.street,'','Suggested addition: '+s.suggestName, s.suggestNote?('\nWhy here: '+s.suggestNote):'', s.suggestPhotoName?('\nPicture attached: '+s.suggestPhotoName+' (please attach from your device)'):''].join('\n');
-    window.location.href='mailto:silvia@oumnik.studio?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
-    this.setState({suggestOpen:false, suggestSent:true});
+  submitSuggest = async () => {
+    const s=this.state; if(!/\S/.test(s.suggestName||'')) return; if(s.suggestSending) return;
+    this.setState({suggestSending:true});
+    try {
+      const message=['Street: '+s.street,'','Suggested addition: '+s.suggestName, s.suggestNote?('Why here: '+s.suggestNote):''].join('\n');
+      const fd=new FormData(); fd.append('_subject','Library suggestion \u2013 '+s.street); fd.append('_captcha','false'); fd.append('message',message);
+      if(s.suggestPhoto){ const blob=await (await fetch(s.suggestPhoto)).blob(); fd.append('attachment', new File([blob], s.suggestPhotoName||'suggestion.jpg', {type:blob.type||'image/jpeg'})); }
+      await fetch(this.FORMSUBMIT_ENDPOINT,{method:'POST',body:fd});
+    } catch(e){ console.warn('suggest send failed', e); }
+    this.setState({suggestOpen:false, suggestSent:true, suggestSending:false});
   };
 
   renderVals(){
@@ -681,7 +685,7 @@ class Component extends DCLogic {
       toInfo:()=>{ this.captureCollage().then(b=>{ this.collageBlob=b; }); this.go('age'); }, finishInfo:()=>this.setState({feedFrom:'thanks'},()=>this.go('feed')),
       feedback:s.feedback||'', setFeedback:(e)=>this.setState({feedback:e.target.value}),
       thanksBtnLabel: /\S/.test(s.feedback||'') ? 'Send feedback →' : 'Send feedback →',
-      goHome:()=>this.setState({residency:null},()=>this.go('city')), sendFeedbackHome:()=>{ const s=this.state; const subj='Placemaking feedback \u2013 '+s.street; const body=['Street: '+s.street,'Ideas placed: '+(s.placed.length+s.sketchPaths.length),'', 'Feedback:', (s.feedback||'(none)')].join('\n'); window.location.href='mailto:silvia@oumnik.studio?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body); this.resetFlow(); },
+      goHome:()=>this.setState({residency:null},()=>this.go('city')), sendFeedbackHome:async()=>{ const st=this.state; if(st.fbSending) return; this.setState({fbSending:true}); try { const fd=new FormData(); fd.append('_subject','Placemaking feedback \u2013 '+st.street); fd.append('_captcha','false'); fd.append('message',['Street: '+st.street,'Ideas placed: '+(st.placed.length+st.sketchPaths.length),'','Feedback:',(st.feedback||'(none)')].join('\n')); await fetch(this.FORMSUBMIT_ENDPOINT,{method:'POST',body:fd}); } catch(e){ console.warn('feedback send failed', e); } this.setState({fbSending:false}); this.resetFlow(); },
       setMapRef:this.setMapRef, mapPins: this.mapReady()?null:mapPins, activeStreet:s.street, activeStreetIdeas:(s.activeIdeas!=null?s.activeIdeas:23), enterEditor:()=>this.go('preview'),
       mapSelected:s.mapSelected, notMapSelected:!s.mapSelected,
       backToMap:()=>this.setState({mapSelected:false},()=>this.go('map')), goCity:()=>this.setState({mapSelected:false},()=>this.go('city')), startCreating:()=>this.go('editor'), previewGallery,
