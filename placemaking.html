@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;family=Space+Mono&amp;display=swap" rel="stylesheet">
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.5.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.0/mapbox-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   *{box-sizing:border-box}
   body{margin:0;font-family:'Lexend',system-ui,sans-serif;font-weight:300}
@@ -500,6 +501,15 @@ class Component extends DCLogic {
   };
 
   // ---- pointer / editor ----
+  FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/silvia@oumnik.studio';
+  captureCollage = async () => {
+    try {
+      const el = this.resultImgEl || this.photoEl;
+      if(!el || !window.html2canvas) return null;
+      const canvas = await window.html2canvas(el, {useCORS:true, backgroundColor:null, scale:2, logging:false});
+      return await new Promise(res=>canvas.toBlob(b=>res(b),'image/png',0.92));
+    } catch(e){ console.warn('collage capture failed', e); return null; }
+  };
   setPhotoRef = (el) => { this.photoEl = el; };
   pct(e){ const r=this.photoEl.getBoundingClientRect(); return {x:Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)), y:Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100))}; }
   togglePhoto = null;
@@ -651,14 +661,14 @@ class Component extends DCLogic {
       age:s.age, setAge:(e)=>this.setState({age:e.target.value.replace(/\D/g,'').slice(0,3)}),
       incAge:()=>this.setState(x=>({age:String(Math.min(120,(Number(x.age)||0)+1))})),
       decAge:()=>this.setState(x=>({age:String(Math.max(0,(Number(x.age)||0)-1))})),
-      ageInvalid: !(Number(s.age)>0) || (s.emailCopy && !/\S+@\S+\.\S+/.test(s.email)),
-      nextAge: ()=>{ if(!(Number(s.age)>0) || (s.emailCopy && !/\S+@\S+\.\S+/.test(s.email))) return; const items=s.placed.map(p=>'\u2022 '+p.type).join('\n'); const subj='Reimagined street \u2013 '+s.street; const body=['Street: '+s.street,'Ideas placed: '+(s.placed.length+s.sketchPaths.length),'Sketches: '+s.sketchPaths.length,'', 'Elements:', (items||'(none)'),'', 'From:', 'Residency: '+(s.residency||'-'), 'Age: '+(s.age||'-'), 'Gender: '+(s.gender||'-'), s.emailCopy?('Contact: '+s.email):''].join('\n'); window.location.href='mailto:silvia@oumnik.studio?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body); this.go('thanks'); },
+      ageInvalid: !(Number(s.age)>0) || (s.emailCopy && !/\S+@\S+\.\S+/.test(s.email)) || s.sending,
+      nextAge: async ()=>{ const st=this.state; if(!(Number(st.age)>0) || (st.emailCopy && !/\S+@\S+\.\S+/.test(st.email))) return; if(st.sending) return; this.setState({sending:true}); try { let blob = this.collageBlob || await this.captureCollage(); const items=st.placed.map(p=>'\u2022 '+p.type).join('\n'); const message=['Street: '+st.street,'Ideas placed: '+(st.placed.length+st.sketchPaths.length),'Sketches: '+st.sketchPaths.length,'','Elements:',(items||'(none)'),'','From:','Residency: '+(st.residency||'-'),'Age: '+(st.age||'-'),'Gender: '+(st.gender||'-'),st.emailCopy?('Contact: '+st.email):''].join('\n'); const fd=new FormData(); fd.append('_subject','Reimagined street \u2013 '+st.street); fd.append('_captcha','false'); fd.append('message',message); if(blob) fd.append('attachment', new File([blob],'collage-'+st.street.replace(/\s+/g,'-')+'.png',{type:'image/png'})); await fetch(this.FORMSUBMIT_ENDPOINT,{method:'POST',body:fd}); } catch(e){ console.warn('submit send failed', e); } this.setState({sending:false}); this.collageBlob=null; this.go('thanks'); },
       genderCards: [['female','Female'],['male','Male'],['whocares','Who cares']].map(([k,t])=>{
         const sel=s.gender===k;
         return React.createElement('button',{key:k,onClick:()=>this.setState(x=>({gender:x.gender===k?null:k})),style:{background:sel?'var(--coral)':'var(--surface)',border:`2px solid ${sel?'var(--coral)':'var(--line)'}`,borderRadius:'999px',padding:'9px 15px',color:sel?'#fff':'var(--ink)',fontWeight:700,fontSize:13,cursor:'pointer'}},t);
       }),
-      ageBtnLabel: !(Number(s.age)>0) ? 'Enter your age to continue' : (s.emailCopy && !/\S+@\S+\.\S+/.test(s.email)) ? 'Enter your email to continue' : 'Submit suggestion',
-      ageBtnStyle: (()=>{ const ok = Number(s.age)>0 && !(s.emailCopy && !/\S+@\S+\.\S+/.test(s.email)); return {marginTop:'auto',width:'100%',border:'none',background: ok?'var(--coral)':'var(--line)',color: ok?'#fff':'var(--muted)',fontFamily:"'Raleway',sans-serif",fontWeight:600,fontSize:'17px',padding:'15px',borderRadius:'16px',boxShadow: ok?'0 10px 24px var(--coral-sh)':'none',cursor: ok?'pointer':'not-allowed',transition:'all .2s'}; })(),
+      ageBtnLabel: s.sending ? 'Sending…' : !(Number(s.age)>0) ? 'Enter your age to continue' : (s.emailCopy && !/\S+@\S+\.\S+/.test(s.email)) ? 'Enter your email to continue' : 'Submit suggestion',
+      ageBtnStyle: (()=>{ const ok = Number(s.age)>0 && !(s.emailCopy && !/\S+@\S+\.\S+/.test(s.email)) && !s.sending; return {marginTop:'auto',width:'100%',border:'none',background: ok?'var(--coral)':'var(--line)',color: ok?'#fff':'var(--muted)',fontFamily:"'Raleway',sans-serif",fontWeight:600,fontSize:'17px',padding:'15px',borderRadius:'16px',boxShadow: ok?'0 10px 24px var(--coral-sh)':'none',cursor: ok?'pointer':'not-allowed',transition:'all .2s'}; })(),
       youthBadge: (()=>{ const n=Number(s.age); if(n>0&&n<=25) return '✦ Your generation inherits this city — your vote counts double'; if(n>=50) return '✦ You remember what this street used to be — help shape what it becomes'; return ''; })(),
       youthBadgeStyle: (()=>{ const n=Number(s.age); const show=(n>0&&n<=25)||(n>=50); const nost=n>=50; return {marginTop:'14px',fontSize:'13px',fontWeight:700,color: nost?'var(--coral)':'var(--teal)',background: nost?'var(--coral-soft)':'var(--teal-soft)',borderRadius:'12px',padding: show?'12px 14px':'0',lineHeight:1.4,maxHeight: show?'80px':'0',overflow:'hidden',opacity: show?1:0,transition:'all .3s'}; })(),
       email:s.email, setEmail:(e)=>{ const v=e.target.value; this.setState({email:v, emailCopy: /\S+@\S+\.\S+/.test(v) ? true : this.state.emailCopy}); },
@@ -668,7 +678,7 @@ class Component extends DCLogic {
       residencyChosen: !!s.residency, residencyLocked: !s.residency,
       residencyBtnStyle: {marginTop:'auto',width:'100%',border:'none',background: s.residency?'var(--teal)':'var(--line)',color: s.residency?'#fff':'var(--muted)',fontFamily:"'Raleway',sans-serif",fontWeight:600,fontSize:'18px',padding:'16px',borderRadius:'18px',boxShadow: s.residency?'0 12px 28px var(--teal-sh)':'none',cursor: s.residency?'pointer':'not-allowed',transition:'all .2s'},
       residencyBtnLabel: s.residency?'Happy placemaking! →':'Choose an option to continue',
-      toInfo:()=>this.go('age'), finishInfo:()=>this.setState({feedFrom:'thanks'},()=>this.go('feed')),
+      toInfo:()=>{ this.captureCollage().then(b=>{ this.collageBlob=b; }); this.go('age'); }, finishInfo:()=>this.setState({feedFrom:'thanks'},()=>this.go('feed')),
       feedback:s.feedback||'', setFeedback:(e)=>this.setState({feedback:e.target.value}),
       thanksBtnLabel: /\S/.test(s.feedback||'') ? 'Send feedback →' : 'Send feedback →',
       goHome:()=>this.setState({residency:null},()=>this.go('city')), sendFeedbackHome:()=>{ const s=this.state; const subj='Placemaking feedback \u2013 '+s.street; const body=['Street: '+s.street,'Ideas placed: '+(s.placed.length+s.sketchPaths.length),'', 'Feedback:', (s.feedback||'(none)')].join('\n'); window.location.href='mailto:silvia@oumnik.studio?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body); this.resetFlow(); },
