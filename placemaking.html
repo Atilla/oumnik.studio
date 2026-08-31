@@ -198,6 +198,7 @@
             <div style="padding:6px 20px 28px">{{ previewGallery }}
               <button onClick="{{ goFeed }}" style="margin-top:14px;width:100%;border:2px solid var(--line);background:var(--surface);color:var(--ink);font-family:'Raleway',sans-serif;font-weight:600;font-size:14px;padding:13px;border-radius:14px">Enter full gallery →</button>
             </div>
+            {{ inspoOverlay }}
           </div>
         </sc-if>
 
@@ -291,30 +292,33 @@
             <button onClick="{{ toInfo }}" style="margin-top:16px;width:100%;border:none;background:var(--coral);color:#fff;font-family:'Raleway',sans-serif;font-weight:600;font-size:16px;padding:15px;border-radius:16px;box-shadow:0 10px 24px var(--coral-sh)">Little about yourself →</button>
           </div>
           <sc-if value="{{ lightbox }}">
-          <div onClick="{{ closeLightbox }}" style="position:absolute;inset:0;z-index:30;background:#000;cursor:zoom-out;animation:fadein .2s ease both">
-            <div style="position:absolute;inset:0;overflow:hidden">
+          <div onClick="{{ closeLightbox }}" style="position:absolute;inset:0;z-index:30;background:rgba(20,12,8,.82);cursor:zoom-out;display:flex;flex-direction:column;overflow-y:auto;animation:fadein .2s ease both">
+            <div style="flex:none;display:flex;align-items:center;justify-content:space-between;padding:52px 20px 14px;color:#fff">
+              <div style="font-family:'Raleway',sans-serif;font-weight:600;font-size:20px">{{ activeStreet }} reimagined</div>
+              <button onClick="{{ closeLightbox }}" style="border:none;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:20px;flex:none;cursor:pointer">✕</button>
+            </div>
+            <div onClick="{{ stop }}" style="position:relative;width:100%;aspect-ratio:3/4;overflow:hidden">
               <div style="position:absolute;inset:0;background:linear-gradient(var(--sky1) 0%,var(--sky2) 46%,var(--ground) 46%)"></div>
               <sc-if value="{{ hasPhoto }}"><div style="position:absolute;inset:0;background:{{ photoBgFit }};filter:{{ photoFilter }}"></div></sc-if>
               {{ sketchLayer }}
               {{ fullPlaced }}
             </div>
-            <button onClick="{{ closeLightbox }}" style="position:absolute;top:16px;right:16px;border:none;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.92);color:#111;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2">✕</button>
           </div>
           </sc-if>
         </sc-if>
 
         <!-- ============ FEED ============ -->
         <sc-if value="{{ isFeed }}">
-          <div style="flex:1;display:flex;flex-direction:column;animation:fadein .3s ease both">
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;animation:fadein .3s ease both">
             <div style="padding:56px 24px 12px;display:flex;align-items:center;gap:12px">
               <button onClick="{{ goResultBack }}" style="border:none;width:36px;height:36px;border-radius:50%;background:var(--surface);color:var(--ink);font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,.12);flex:none">‹</button>
-              <div><h2 style="font-family:'Raleway',sans-serif;font-weight:600;font-size:24px;margin:0">Others' creations</h2><p style="margin:2px 0 0;font-size:13px;color:var(--muted);font-weight:600">Torggata · sorted by votes</p></div>
+              <div><h2 style="font-family:'Raleway',sans-serif;font-weight:600;font-size:24px;margin:0">Inspiration</h2><p style="margin:2px 0 0;font-size:13px;color:var(--muted);font-weight:600">Ideas from around the world</p></div>
             </div>
-            <div style="flex:1;overflow-y:auto;padding:6px 24px 24px">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">{{ feedCreations }}</div>
-              <div style="font-family:'Raleway',sans-serif;font-weight:600;font-size:16px;color:var(--ink);margin:24px 0 12px">Inspiration</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">{{ feedInspo }}</div>
+            <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 6px 24px 12px; padding-bottom: 12px; padding-top: 8px; padding-right: 24px; padding-left: 24px; overflow: auto">
+              <div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:150px;align-content:start;gap:10px">{{ feedInspo }}</div>
             </div>
+            <div style="flex: none; padding: 8px 24px 20px; padding-top: 0px; padding-bottom: 20px">{{ inspoPager }}</div>
+            {{ inspoOverlay }}
           </div>
         </sc-if>
 
@@ -440,9 +444,10 @@ class Component extends DCLogic {
     { id:'18', name:'Karl Johans gate',   lng:10.74126, lat:59.9131,  c:41 },
     { id:'19', name:'Prinsens gate',      lng:10.7408211, lat:59.9120525, c:7, photo:'uploads/19.jpg' },
     { id:'20', name:'Tollbugata',         lng:10.74094, lat:59.91122, c:13 },
-    { id:'21', name:'Grensen',            lng:10.74335, lat:59.9138,  c:18 },
+    { id:'21', name:'Grensen',            lng:10.7433929, lat:59.9143225, c:18, photo:'uploads/21.jpg' },
     { id:'22', name:'Torggata',           lng:10.748528, lat:59.914389, c:23, photo:'uploads/22.jpg' },
-    { id:'23', name:'Møllergata',         lng:10.749222, lat:59.916417, c:0, photo:'uploads/23.jpg' },
+    { id:'23a',name:'Møllergata',         lng:10.7463607, lat:59.9141891, c:0, photo:'uploads/23a.jpg' },
+    { id:'23b',name:'Møllergata',         lng:10.749222, lat:59.916417, c:0, photo:'uploads/23b.jpg' },
     { id:'24a',name:'Akersgata',          lng:10.73867, lat:59.91048, c:0, photo:'uploads/24a.jpg' },
     { id:'24b',name:'Akersgata',          lng:10.7402423, lat:59.9120778, c:0, photo:'uploads/24b.jpg' },
     { id:'24c',name:'Akersgata',          lng:10.7412,  lat:59.91297, c:0, photo:'uploads/24c.jpg' },
@@ -461,8 +466,8 @@ class Component extends DCLogic {
     { id:'37', name:'Wilses gate',        lng:10.75023, lat:59.91797, c:0, photo:'uploads/37.jpg' },
     { id:'38', name:'Keysers gate',       lng:10.74413, lat:59.91699, c:0, photo:'uploads/38.jpg' },
     { id:'39', name:'Apotekergata',       lng:10.74344, lat:59.91498, c:0, photo:'uploads/39.jpg' },
-    { id:'44', name:'Arbeidsgate',        lng:10.7407509, lat:59.914627, c:0 },
-    { id:'45', name:'Smedkroken',         lng:10.741518, lat:59.9143225, c:0 },
+    { id:'44', name:'Arbeidsgate',        lng:10.7407509, lat:59.914627, c:0, photo:'uploads/44.jpg' },
+    { id:'45', name:'Smedkroken',         lng:10.741518, lat:59.9143225, c:0, photo:'uploads/45.jpg' },
     { id:'46', name:'Sehesteds gate',     lng:10.7388433, lat:59.9154383, c:0, photo:'uploads/46.jpg' },
     { id:'47', name:'Kristian Augusts gate', lng:10.7405761, lat:59.9158984, c:0, photo:'uploads/47.jpg' },
     { id:'48', name:'Mariboes gate',      lng:10.7499474, lat:59.9161317, c:0, photo:'uploads/48.jpg' },
@@ -485,6 +490,7 @@ class Component extends DCLogic {
     const paint=(dot,sel)=>{ dot.style.background=sel?CORAL:dot._base; dot.style.transform=sel?'scale(1.18)':'scale(1)'; dot.style.zIndex=sel?'2':'1'; };
     const select=(clicked)=>{ this._markers.forEach(x=>paint(x,x===clicked)); };
     this.STREETS.forEach((street)=>{
+      if(!street.photo) return;
       const wrap=document.createElement('div');
       wrap.style.cssText='cursor:pointer';
       const dot=document.createElement('div');
@@ -494,7 +500,7 @@ class Component extends DCLogic {
       dot._base = street.photo ? PURPLE : LIGHT;
       paint(dot,false);
       wrap.appendChild(dot);
-      if(street.photo){ wrap.style.cursor='pointer'; wrap.addEventListener('click',(e)=>{ e.stopPropagation(); select(dot); this.setState({street:street.name, streetId:street.id, activeIdeas:street.c, mapSelected:true}); }); }
+      if(street.photo){ wrap.style.cursor='pointer'; wrap.addEventListener('click',(e)=>{ e.stopPropagation(); select(dot); this.setState({street:street.name, streetId:street.id, activeIdeas:street.c, mapSelected:true, placed:[], sketchPaths:[], drawing:null, nextId:1, likes:[]}); this.collageBlob=null; }); }
       else { wrap.style.cursor='default'; }
       this._markers.push(dot);
       new window.mapboxgl.Marker(wrap).setLngLat([street.lng,street.lat]).addTo(this.map);
@@ -628,22 +634,23 @@ class Component extends DCLogic {
       React.createElement('div',{key:it.id,style:{position:'absolute',left:it.x+'%',top:Math.max(38,it.y)+'%',transform:'translate(-50%,-50%)',color:`var(${this.ACCENT[it.type]})`}},this.icon(it.type,22))));
 
     // feed
-    const previewData=[['g1','#1  Torggata',214],['g2','#2  Akersgata',186],['g3','#3  Møllergata',151],['g4','#4  Grensen',133]];
-    const likesArr=s.likes||[];
+    const inspoCities=[
+      ['Gent','Belgium',['uploads/insp-gent-1.jpg']],
+      ['Hudson Square','New York',['uploads/insp-hudson-1.jpg','uploads/insp-hudson-2.jpg','uploads/insp-hudson-3.jpg']],
+      ['Sofia','Bulgaria',['uploads/insp-sofia-1.jpg','uploads/insp-sofia-2.jpg','uploads/insp-sofia-3.jpg']],
+      ['Stavanger','Norway',['uploads/insp-stavanger-1.jpg','uploads/insp-stavanger-2.jpg']],
+      ['Brugge','Belgium',['uploads/insp-brugge-1.jpg']],
+      ['Montpellier','France',['uploads/insp-montpellier-1.jpg']],
+      ['Zürich','Switzerland',['uploads/insp-zurich-1.jpg']],
+    ];
     const previewGallery=React.createElement('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}},
-      previewData.map(([id,name,base],i)=>{
-        const liked=likesArr.includes(id); const votes=base+(liked?1:0);
-        const pos=['left top','right top','left center','right bottom'][i%4];
-        return React.createElement('div',{key:id,style:{borderRadius:16,overflow:'hidden',background:'var(--surface)',border:'1px solid var(--line)'}},
-          React.createElement('div',{style:{height:72,background:this.STREET_PHOTO?(pos+'/150% url(\''+this.STREET_PHOTO+'\')'):'var(--road)'}}),
+      inspoCities.slice(0,4).map(([name,place,pics],i)=>
+        React.createElement('div',{key:'pg'+i,onClick:()=>this.setState({inspoOpen:{name,place,pics},inspoIdx:0}),style:{borderRadius:16,overflow:'hidden',background:'var(--surface)',border:'1px solid var(--line)',cursor:'pointer'}},
+          React.createElement('div',{style:{position:'relative',height:72,background:`center/cover no-repeat url('${pics[0]}')`}},
+            pics.length>1?React.createElement('div',{style:{position:'absolute',right:6,top:6,background:'rgba(0,0,0,.6)',color:'#fff',fontSize:10,fontWeight:800,padding:'2px 7px',borderRadius:20}},String(pics.length)):null),
           React.createElement('div',{style:{padding:'7px 10px',display:'flex',alignItems:'center',justifyContent:'space-between'}},
             React.createElement('div',{style:{fontSize:11,fontWeight:600,color:'var(--ink)'}},name),
-            React.createElement('button',{onClick:()=>this.toggleLike(id),style:{border:'none',background:'transparent',cursor:'pointer',display:'flex',alignItems:'center',gap:4,color:liked?'#E6552F':'var(--muted)',fontSize:12,fontWeight:700,padding:0}},
-              React.createElement('span',{style:{fontSize:15}},liked?'\u2665':'\u2661'), String(votes))
-          )
-        );
-      })
-    );
+            React.createElement('div',{style:{fontSize:10,fontWeight:800,color:'var(--teal)'}},place)))));
 
     const cardOf=(name,meta,key,idx)=>React.createElement('div',{key,style:{background:'var(--surface)',borderRadius:16,overflow:'hidden',border:'1px solid var(--line)'}},
       React.createElement('div',{key:'im',style:{height:104,background:this.STREET_PHOTO?(['left top','right top','left center','right bottom'][(idx||0)%4]+'/150% url(\''+this.STREET_PHOTO+'\')'):'var(--road)'}}),
@@ -652,8 +659,42 @@ class Component extends DCLogic {
         React.createElement('span',{style:{fontSize:11,fontWeight:800,color:'var(--teal)',flex:'none'}},meta)));
     const feedData=[['Torggata',214],['Akersgata',186],['Møllergata',151],['Grensen',133],['Kongens gate',128],['Karl Johans gate',97]];
     const feedCreations=feedData.map(([street,votes],i)=>cardOf('#'+(i+1)+'  '+street,'♥ '+votes,'c'+i,i));
-    const inspoData=[['Superblock','Barcelona'],['Parklet','San Francisco'],['Woonerf','Netherlands'],['Pocket park','Tokyo']];
-    const feedInspo=inspoData.map(([name,place],i)=>cardOf(name,place,'i'+i,i));
+    const rots=[-4,3,-2];
+    const feedInspo=inspoCities.map(([name,place,pics],i)=>{
+      const stack=pics.length>1;
+      const imgArea=React.createElement('div',{key:'im',style:{position:'relative',flex:1,minHeight:0,background:'var(--road)'}},
+        React.createElement('div',{style:{position:'absolute',inset:0,background:`center/cover no-repeat url('${pics[0]}')`}}),
+        stack?React.createElement('div',{key:'b',style:{position:'absolute',right:8,top:8,zIndex:9,display:'flex',alignItems:'center',gap:4,background:'rgba(0,0,0,.6)',color:'#fff',fontSize:11,fontWeight:800,padding:'4px 8px',borderRadius:20}},
+          React.createElement('span',{key:'ic',style:{position:'relative',display:'inline-block',width:12,height:12}},
+            React.createElement('span',{style:{position:'absolute',left:2,top:0,width:9,height:9,border:'1.6px solid #fff',borderRadius:2}}),
+            React.createElement('span',{style:{position:'absolute',left:0,top:3,width:9,height:9,border:'1.6px solid #fff',borderRadius:2,background:'rgba(0,0,0,.6)'}})),
+          String(pics.length)):null);
+      return React.createElement('div',{key:'i'+i,onClick:()=>this.setState({inspoOpen:{name,place,pics},inspoIdx:0}),style:{background:'var(--surface)',borderRadius:16,overflow:'hidden',border:'1px solid var(--line)',cursor:'pointer',height:'100%',display:'flex',flexDirection:'column'}},
+        imgArea,
+        React.createElement('div',{key:'ft',style:{padding:'9px 11px',display:'flex',justifyContent:'space-between',alignItems:'center',gap:6}},
+          React.createElement('span',{style:{fontSize:12,fontWeight:600,color:'var(--ink)'}},name),
+          React.createElement('span',{style:{fontSize:11,fontWeight:800,color:'var(--teal)',flex:'none'}},place)));
+    });
+    const PER=6;
+    const inspoPageCount=Math.ceil(feedInspo.length/PER);
+    const inspoPage=Math.min(s.inspoPage||0, inspoPageCount-1);
+    const feedInspoPage=feedInspo.slice(inspoPage*PER, inspoPage*PER+PER);
+    const inspoPager = inspoPageCount>1 ? React.createElement('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:14,marginTop:16}},
+      React.createElement('button',{key:'p',disabled:inspoPage===0,onClick:()=>this.setState({inspoPage:inspoPage-1}),style:{border:'none',width:38,height:38,borderRadius:'50%',background:inspoPage===0?'var(--line)':'var(--surface)',color:inspoPage===0?'var(--muted)':'var(--ink)',boxShadow:inspoPage===0?'none':'0 3px 10px rgba(0,0,0,.12)',fontSize:18,cursor:inspoPage===0?'default':'pointer'}},'\u2039'),
+      React.createElement('div',{key:'d',style:{display:'flex',gap:7}}, Array.from({length:inspoPageCount}).map((_,p)=>React.createElement('span',{key:p,onClick:()=>this.setState({inspoPage:p}),style:{width:8,height:8,borderRadius:'50%',cursor:'pointer',background:p===inspoPage?'var(--coral)':'var(--line)'}}))),
+      React.createElement('button',{key:'n',disabled:inspoPage>=inspoPageCount-1,onClick:()=>this.setState({inspoPage:inspoPage+1}),style:{border:'none',width:38,height:38,borderRadius:'50%',background:inspoPage>=inspoPageCount-1?'var(--line)':'var(--surface)',color:inspoPage>=inspoPageCount-1?'var(--muted)':'var(--ink)',boxShadow:inspoPage>=inspoPageCount-1?'none':'0 3px 10px rgba(0,0,0,.12)',fontSize:18,cursor:inspoPage>=inspoPageCount-1?'default':'pointer'}},'\u203a')) : null;
+    const io=s.inspoOpen;
+    const iIdx=s.inspoIdx||0;
+    const arrowBtn=(dir,disabled)=>React.createElement('button',{key:dir,disabled,onClick:(e)=>{e.stopPropagation();if(!disabled)this.setState({inspoIdx:iIdx+(dir==='‹'?-1:1)});},style:{border:'none',width:46,height:46,borderRadius:'50%',background:disabled?'rgba(255,255,255,.25)':'rgba(255,255,255,.92)',color:disabled?'rgba(0,0,0,.35)':'#111',fontSize:22,cursor:disabled?'default':'pointer',display:'flex',alignItems:'center',justifyContent:'center'}},dir);
+    const inspoOverlay = io ? React.createElement('div',{onClick:()=>this.setState({inspoOpen:null}),style:{position:'absolute',inset:0,zIndex:60,background:'rgba(20,12,8,.82)',display:'flex',flexDirection:'column',overflowY:'auto',animation:'fadein .2s ease both'}},
+      React.createElement('div',{key:'h',style:{flex:'none',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'52px 20px 14px',color:'#fff'}},
+        React.createElement('div',{key:'t'},
+          React.createElement('div',{style:{fontFamily:"'Raleway',sans-serif",fontWeight:600,fontSize:20}},io.name),
+          React.createElement('div',{style:{fontSize:12,fontWeight:700,opacity:.7,marginTop:2}},io.place+(io.pics.length>1?'  \u00b7  '+(iIdx+1)+'/'+io.pics.length:''))),
+        React.createElement('button',{key:'x',onClick:(e)=>{e.stopPropagation();this.setState({inspoOpen:null});},style:{border:'none',width:38,height:38,borderRadius:'50%',background:'rgba(255,255,255,.16)',color:'#fff',fontSize:20,flex:'none'}},'\u00d7')),
+      React.createElement('img',{key:'im',src:io.pics[iIdx],onClick:(e)=>e.stopPropagation(),style:{width:'100%',display:'block'}}),
+      io.pics.length>1?React.createElement('div',{key:'nav',onClick:(e)=>e.stopPropagation(),style:{display:'flex',justifyContent:'flex-end',gap:12,padding:'16px 22px 0'}},
+        arrowBtn('\u2039',iIdx===0), arrowBtn('\u203a',iIdx===io.pics.length-1)):null) : null;
 
     return {
       themeVars, themeIcon: s.theme==='light'?'\u263e':'\u2600',
@@ -711,6 +752,7 @@ class Component extends DCLogic {
       lightbox:s.lightbox, fullPlaced,
       setResultImgRef:(el)=>{ this.resultImgEl=el; },
       openLightbox:()=>this.setState({lightbox:true}),
+      stop:(e)=>e.stopPropagation(),
       closeLightbox:()=>this.setState({lightbox:false}),
       resultSketch: React.createElement('svg',{viewBox:'0 0 100 100',preserveAspectRatio:'none',style:{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}}, s.sketchPaths.map((path,i)=>React.createElement('polyline',{key:i,points:path.map(p=>`${p.x} ${p.y}`).join(' '),fill:'none',stroke:'var(--sun)',strokeWidth:0.8,strokeLinecap:'round',strokeLinejoin:'round'}))),
       emailAgain:()=>{ const ok=/\S+@\S+\.\S+/.test(s.email); if(ok){ this.setState({emailSent:true}); } else { this.setState({emailPrompt:true}); } },
@@ -718,7 +760,7 @@ class Component extends DCLogic {
       sendBtnBg: /\S+@\S+\.\S+/.test(s.email)?'var(--teal)':'var(--line)',
       confirmEmailSend:()=>{ if(/\S+@\S+\.\S+/.test(s.email)) this.setState({emailSent:true, emailPrompt:false}); },
       emailBtnLabel:s.emailSent?'✓ Copy sent to your inbox':'Email me a copy',
-      goFeed:()=>this.setState({feedFrom:'preview'},()=>this.go('feed')), goResultBack:()=>this.go(s.feedFrom||'result'), feedCreations, feedInspo,
+      goFeed:()=>this.setState({feedFrom:'preview'},()=>this.go('feed')), goResultBack:()=>this.go(s.feedFrom||'result'), feedCreations, feedInspo:feedInspoPage, inspoPager, inspoOverlay,
     };
   }
 }
